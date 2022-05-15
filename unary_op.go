@@ -14,21 +14,21 @@ func NewUnaryOp(token OperatorToken, cost uint8, apply func(float64) (float64, b
 	}
 }
 
-func (op *UnaryOp) Apply(eq *Equation) *Equation {
+func (op *UnaryOp) Apply(eq *Equation) (Equation, bool) {
 	res, ok := op.apply(eq.value)
 	if !ok {
-		return nil
+		return Equation{}, false
 	}
 
 	tokens := make([]OperatorToken, len(eq.tokens)+1)
 	copy(tokens, eq.tokens)
 	tokens[len(eq.tokens)] = op.token
 
-	return &Equation{
+	return Equation{
 		tokens: tokens,
 		cost:   eq.cost + op.cost,
 		value:  res,
-	}
+	}, true
 }
 
 type UnaryOpPrinter struct {

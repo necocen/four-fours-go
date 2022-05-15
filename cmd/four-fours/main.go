@@ -4,12 +4,10 @@ import (
 	"fmt"
 	"fourfours"
 	"math"
-
-	"github.com/pkg/profile"
 )
 
 func main() {
-	defer profile.Start(profile.ProfilePath(".")).Stop()
+	//defer profile.Start(profile.ProfilePath(".")).Stop()
 	negate := fourfours.NewUnaryOp(fourfours.OperatorToken(0x00), 2, func(v float64) (float64, bool) { return -v, true })
 	sqrt := fourfours.NewUnaryOp(0x01, 4, func(v float64) (float64, bool) {
 		if v > 0 && v != 1 {
@@ -52,8 +50,8 @@ func main() {
 	divP := fourfours.NewBinaryOpPrinter(0x13, "", "/", "", 5, true, false, true, true)
 	powP := fourfours.NewBinaryOpPrinter(0x14, "", "^", "", 3, false, true, true, true)
 
-	result := make(map[int]*fourfours.Equation)
-	for v, eq := range knowledge {
+	result := make(map[int]fourfours.Equation)
+	for v, eq := range *knowledge {
 		_, frac := math.Modf(v)
 		if frac != 0 || v < 0 || v > 1000 {
 			continue

@@ -14,10 +14,10 @@ func NewBinaryOp(token OperatorToken, cost uint8, apply func(lhs, rhs float64) (
 	}
 }
 
-func (op *BinaryOp) Apply(lhs, rhs *Equation) *Equation {
+func (op *BinaryOp) Apply(lhs, rhs *Equation) (Equation, bool) {
 	res, ok := op.apply(lhs.value, rhs.value)
 	if !ok {
-		return nil
+		return Equation{}, false
 	}
 
 	tokens := make([]OperatorToken, len(lhs.tokens)+len(rhs.tokens)+1)
@@ -25,11 +25,11 @@ func (op *BinaryOp) Apply(lhs, rhs *Equation) *Equation {
 	copy(tokens[len(lhs.tokens):], rhs.tokens)
 	tokens[len(lhs.tokens)+len(rhs.tokens)] = op.token
 
-	return &Equation{
+	return Equation{
 		tokens: tokens,
 		cost:   lhs.cost + rhs.cost + op.cost,
 		value:  res,
-	}
+	}, true
 }
 
 type BinaryOpPrinter struct {

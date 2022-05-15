@@ -8,10 +8,10 @@ type Equation struct {
 	value  float64
 }
 
-func NewEquationWithNumber(numbers string) *Equation {
+func NewEquationWithNumber(numbers string) (Equation, bool) {
 	num, err := strconv.Atoi(numbers)
 	if err != nil {
-		return nil
+		return Equation{}, false
 	}
 
 	tokens := make([]OperatorToken, len(numbers))
@@ -23,9 +23,9 @@ func NewEquationWithNumber(numbers string) *Equation {
 		}
 	}
 
-	return &Equation{
+	return Equation{
 		tokens: tokens,
 		cost:   0,
 		value:  float64(num),
-	}
+	}, true
 }

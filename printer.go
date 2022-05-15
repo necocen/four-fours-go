@@ -7,7 +7,7 @@ import (
 const parenLeft string = "("
 const parenRight string = ")"
 
-func Print(unaryOps []UnaryOpPrinter, binaryOps []BinaryOpPrinter, e *Equation) string {
+func Print(unaryOps []UnaryOpPrinter, binaryOps []BinaryOpPrinter, e Equation) string {
 	// 部分式文字列と、最後に追加された演算子の優先度のペアのスタック
 	stack := []struct {
 		string
