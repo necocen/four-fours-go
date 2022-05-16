@@ -8,6 +8,10 @@ type Equation struct {
 	value  float64
 }
 
+func (e *Equation) IsBetterThan(other *Equation) bool {
+	return e.cost < other.cost
+}
+
 func NewEquationWithNumber(numbers string) (Equation, bool) {
 	num, err := strconv.Atoi(numbers)
 	if err != nil {

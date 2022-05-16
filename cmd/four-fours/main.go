@@ -52,11 +52,13 @@ func main() {
 
 	result := make(map[int]fourfours.Equation)
 	for v, eq := range *knowledge {
-		_, frac := math.Modf(v)
-		if frac != 0 || v < 0 || v > 1000 {
+		if math.Abs(math.Round(v)-v) > 1e-9 || v < 0 || v > 1000 {
 			continue
 		}
-		result[int(v)] = eq
+		i := int(math.Round(v))
+		if old, ok := result[i]; !ok || eq.IsBetterThan(&old) {
+			result[i] = eq
+		}
 	}
 
 	for i := 0; i <= 1000; i++ {
