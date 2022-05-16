@@ -4,10 +4,17 @@ import (
 	"fmt"
 	"fourfours"
 	"math"
+	"os"
 )
 
 func main() {
-	//defer profile.Start(profile.ProfilePath(".")).Stop()
+	var numbers string
+	if len(os.Args) == 2 {
+		numbers = os.Args[1]
+	} else {
+		numbers = "4444"
+	}
+
 	negate := fourfours.NewUnaryOp(fourfours.OperatorToken(0x00), 2, func(v float64) (float64, bool) { return -v, true })
 	sqrt := fourfours.NewUnaryOp(0x01, 4, func(v float64) (float64, bool) {
 		if v > 0 && v != 1 {
@@ -39,7 +46,7 @@ func main() {
 
 	searcher := fourfours.NewSearcher([]fourfours.UnaryOp{negate, sqrt, fact}, []fourfours.BinaryOp{add, sub, mul, div, pow})
 
-	knowledge := searcher.Search("4444")
+	knowledge := searcher.Search(numbers)
 
 	negateP := fourfours.NewUnaryOpPrinter(0x00, "-", "", 3, true)
 	sqrtP := fourfours.NewUnaryOpPrinter(0x01, "√", "", 1, true)
